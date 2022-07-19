@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -29,9 +31,16 @@ public class App {
         List<Map<String, String>> listaDeFilmes = parser.parse(body);
 
 //        exibir e manipular os dados
+        var geradora = new GeradorDeFigurinhas();
         for (Map<String, String> filme : listaDeFilmes) {
-            out.println("Título: \u001b[1m" + filme.get("title") + "\u001b[m");
-            out.println("Poster: \u001b[1m" + filme.get("image") + "\u001b[m");
+            String urlImagem = filme.get("image");
+            String titulo = filme.get("title");
+            String nomeArquivo = titulo + ".png";
+
+            InputStream inputStream = new URL(urlImagem).openStream();
+            geradora.cria(inputStream, nomeArquivo);
+
+            out.println("Título: \u001b[1m" + titulo + "\u001b[m");
             out.println("\u001b[38;2;255;255;255m\u001b[48;2;42;122;228mClassificação: " + filme.get("imDbRating") + "\u001b[m");
             int countEstrelas = (int) Math.floor(Double.parseDouble(filme.get("imDbRating")));
             IntStream.range(0, countEstrelas).mapToObj(i -> "\u2B50").forEach(out::print);
