@@ -1,3 +1,5 @@
+package extratores;
+
 public class Conteudo {
     private final String titulo;
     private final String url;

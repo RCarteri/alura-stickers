@@ -1,8 +1,10 @@
+package extratores;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ExtratordeConteudoDoIMDB implements ExtratordeConteudo{
+public class ExtratordeConteudoDaNasa implements ExtratordeConteudo{
     public List<Conteudo> extraiConteudos(String json) {
 //        extrair só os dados que interessam (título, poster, classificação)
         var parser = new JsonParser();
@@ -13,10 +15,8 @@ public class ExtratordeConteudoDoIMDB implements ExtratordeConteudo{
 //        popular a lista de conteudos
         for (Map<String, String> atributos : listaDeAtributos) {
             String titulo = atributos.get("title");
-            String urlImagem = atributos.get("image")
-                    .replaceAll("(@+)(.*).jpg", "$1.jpg");
+            String urlImagem = atributos.get("url");
             var conteudo = new Conteudo(titulo, urlImagem);
-            conteudo.setNota(Double.parseDouble(atributos.get("imDbRating")));
             conteudos.add(conteudo);
         }
 
